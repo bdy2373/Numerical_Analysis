@@ -1,0 +1,27 @@
+unction [root, ea, iter] = falseposition(func, xl, xu, es, maxit)
+iter = 1;  ea = 100;
+xr = zeros(0, iter);
+xr(1) = xl;
+ea = zeros(0, iter);
+while(1)
+    xold = xr(iter);
+    fl = func(xl);
+    fu = func(xu);
+    iter = iter + 1;
+    xr(iter) = xu - fu * (xl - xu) / (fl - fu);
+    if xr(iter) ~= 0
+        ea(iter) = abs((xr(iter) - xold) / xr(iter)) * 100;
+    end
+    test = fl * func(xr);
+    if test < 0
+        xu = xr(iter);
+    elseif test > 0
+        xl = xr(iter);
+    else
+        ea(iter) = 0;
+    end
+    if ea(iter) <= es | iter >= maxit
+        break
+    end
+end
+root = xr;
