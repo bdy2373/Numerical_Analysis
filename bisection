@@ -1,0 +1,26 @@
+function [root, error, iter] = bisection(func, xl, xu, es, maxit)
+iter = 1; xr = zeros(0,iter); 
+xr(1) = xl; ea = 100;
+ea = zeros(0, iter);
+while(1)
+    xrold = xr(iter);
+    iter = iter + 1;
+    xr(iter) = (xl + xu) / 2;
+    if xr(iter) ~= 0
+        ea(iter) = abs((xr(iter) - xrold) / xr(iter)) * 100;
+    end
+    test = func(xl) * func(xr(iter));
+    if test < 0
+        xu = xr(iter);
+    elseif test > 0
+        xl = xr(iter);
+    else
+        ea(iter) = 0;
+    end
+    if ea(iter) <= es | iter >= maxit
+        
+        break
+    end
+end
+root = xr;
+error = ea;
