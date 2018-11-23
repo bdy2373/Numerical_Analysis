@@ -1,0 +1,43 @@
+function assignment_18_1
+xl = 0; xu = 1; es=10^-13.5; maxit=100; xr=0.5; 
+func1 = @(x) x.^2 - 0.1911; 
+dfunc1 = @(x) 2*x; %derivative of func1
+ 
+[x1, error1_rel, ~] = bisection(func1, xl, xu, es, maxit); 
+[x2, error2_rel, ~] = falseposition(func1, xl, xu, es, maxit);
+[x3, error3_rel, ~] = secant(func1, xl, xu, es, maxit);
+[x4, error4_rel, ~] = newton(func1,dfunc1,xr,es,maxit);
+ 
+iter1=length(x1); iter2=length(x2); iter3=length(x3); iter4=length(x4); 
+root1=x1(iter1); %root2=x2(iter2); root3=x3(iter3); root4=x4(iter4);
+root_true=root1; % The root of bisection method is assumed to be true. 
+error1_true=abs((x1-root_true)/root_true); 
+error2_true=abs((x2-root_true)/root_true); 
+error3_true=abs((x3-root_true)/root_true); 
+error4_true=abs((x4-root_true)/root_true); 
+ 
+ 
+figure(1) % plot the true relative errors
+k1=1:iter1; k2=1:iter2; k3=1:iter3; k4=1:iter4; 
+H=semilogy(k1,error1_true,'r+-',k2,error2_true,'b+-',k3,error3_true,'g+-',k4,error4_true,'m+-');
+set(H,'LineWidth',1.25); 
+title('Figure 1. True Relative Error'); 
+xlabel('Number of Iterations');
+ylabel('True Relative Error'); 
+grid; 
+legend('show'); 
+h = legend('Bisection','False position','Secant','Newton-Rapson');
+set(h,'Interpreter','none')
+ 
+figure(2) % plot the approximate relative errors
+k1=1:iter1; k2=1:iter2; k3=1:iter3; k4=1:iter4; 
+H=semilogy(k1,error1_rel,'r+-',k2,error2_rel,'b+-',k3,error3_rel,'g+-',k4,error4_rel,'m+-'); 
+set(H,'LineWidth',1.25); 
+title('Figure 2. Approximate Relative Error'); 
+xlabel('Number of Iterations'); 
+ylabel('Approximate Relative Error'); 
+grid; 
+legend('show');
+h = legend('Bisection','False position','Secant','Newton-Rapson'); 
+set(h,'Interpreter','none') 
+end
