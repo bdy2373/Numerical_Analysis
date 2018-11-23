@@ -1,0 +1,22 @@
+function [root, error, iter] = secant(func, x0, x1, es, maxit)
+ 
+iter = 1;
+u = func(x0);
+v = func(x1);
+x = zeros(0,iter);
+x(1) = x1-v*(x1-x0) / (v-u);
+ea = zeros(0,iter);
+ea(1) = abs(x1-x0);
+ 
+while(ea(iter) >es) & (iter <=maxit) & ((u-v)~=0)
+    x0 = x1;
+    x1 = x(iter);
+    u = v;
+    v = func(x1);
+    iter = iter +1;
+    x(iter) = x1-v*(x1-x0) / (v-u);
+    ea(iter) = abs(x1-x0);%semicolon 안붙이면 뒤에 아래에 뜸
+    %옮겨진대로 업데이트를 다 해주면 된다. 
+end
+root = x;
+error = ea;
