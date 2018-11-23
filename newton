@@ -1,0 +1,20 @@
+function [root, error, iter] = newton(func, df, x0, es, maxit) %newton-rapson
+iter = 1;
+u = func(x0);
+v = df(x0);%미분한 함수의 초기값을 넣어줌
+ 
+xa = zeros(0,iter+1);
+xa(1)=x0;
+ea = zeros(0, iter+1);
+ea(1) = abs(u/v);
+ 
+while(ea(iter)>es)&(iter<=maxit)&(v~=0)
+    u = func(xa(iter));
+    v = df(xa(iter));
+    x1 = xa(iter) - u / v;
+    iter = iter + 1;
+    ea(iter) = abs(x1 - xa(iter-1));
+    xa(iter) = x1;
+end
+root = xa;
+error = ea;
